@@ -6,6 +6,7 @@
 import argparse
 import logging
 import os
+import progressbar
 
 import soundfile as sf
 from examples.textless_nlp.gslm.unit2speech.tts_data import (
@@ -80,8 +81,10 @@ def main(args, logger):
     if not os.path.exists(hparams.code_dict):
         hparams.code_dict = args.code_dict_path
     tts_dataset = TacotronInputDataset(hparams)
-
-    for name, quantized_units in zip(names_batch, quantized_units_batch):
+    bar = progressbar.ProgressBar(maxval=len(audio_files))
+    bar.start()
+    for index,(name, quantized_units) in enumerate(zip(names_batch, quantized_units_batch)):
+        bar.update(index)
         quantized_units_str = " ".join(map(str, quantized_units))
         tts_input = tts_dataset.get_tensor(quantized_units_str)
         mel, aud, aud_dn, has_eos = synthesize_audio(
@@ -95,6 +98,7 @@ def main(args, logger):
         sf.write(
             f"{out_file_path}", aud_dn[0].cpu().float().numpy(), sample_rate
         )
+    bar.finish()
 
 
 if __name__ == "__main__":
