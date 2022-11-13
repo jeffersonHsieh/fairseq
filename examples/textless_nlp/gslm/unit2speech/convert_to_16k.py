@@ -13,8 +13,8 @@ def find_all_files(path_dir, extension):
                 out.append(((str(Path(f).stem)), os.path.join(root, f)))
     return out
 
-def convert16k(inputfile, outputfile16k):
-    command = ('sox -c 1 -b 16 {} -t wav {} rate 16k'.format(inputfile, outputfile16k))
+def convert16k(inputfile, outputfile16k, sr='16k'):
+    command = ('sox -c 1 -b 16 {} -t wav {} rate {}'.format(inputfile, outputfile16k,sr))
     subprocess.call(shlex.split(command))
 
 if __name__ == "__main__":
@@ -27,6 +27,8 @@ if __name__ == "__main__":
                     help='Path to the output dir.')
     parser.add_argument('--extension', type=str, default='wav',
                     help='Audio file extension in the input. Default: mp3')
+    parser.add_argument('--new_sampling_rate', type=str, default='16k',
+                    help='new_output_sampling_rate')
     args = parser.parse_args()
 
     # Find all sequences
