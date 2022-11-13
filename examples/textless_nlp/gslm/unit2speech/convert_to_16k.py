@@ -53,6 +53,6 @@ if __name__ == "__main__":
         bar.update(index)
         input_file = os.path.join(args.input_dir, file)
         output_file = os.path.join(args.output_dir, os.path.splitext(file)[0]+".wav")
-        convert16k(input_file, output_file)
+        convert16k(input_file, output_file,sr=args.new_sampling_rate)
     bar.finish()
     print(f"...done {len(audio_files)} files in {time()-start_time} seconds.")
