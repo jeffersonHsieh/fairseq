@@ -42,13 +42,13 @@ def load_tacotron(tacotron_model_path, max_decoder_steps):
     sr = hparams.sampling_rate
     model = Tacotron2(hparams)
     model.load_state_dict(ckpt_dict["model_dict"])
-    model = model.cuda().eval().half()
+    model = model.cuda().eval()#.half()
     return model, sr, hparams
 
 
 def load_waveglow(waveglow_path):
     waveglow = torch.load(waveglow_path)["model"]
-    waveglow = waveglow.cuda().eval().half()
+    waveglow = waveglow.cuda().eval()#.half()
     for k in waveglow.convinv:
         k.float()
     denoiser = Denoiser(waveglow)
