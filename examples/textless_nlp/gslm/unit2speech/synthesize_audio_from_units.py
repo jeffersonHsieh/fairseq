@@ -81,7 +81,7 @@ def main(args, logger):
     if not os.path.exists(hparams.code_dict):
         hparams.code_dict = args.code_dict_path
     tts_dataset = TacotronInputDataset(hparams)
-    bar = progressbar.ProgressBar(maxval=len(audio_files))
+    bar = progressbar.ProgressBar(maxval=len(names_batch))
     bar.start()
     for index,(name, quantized_units) in enumerate(zip(names_batch, quantized_units_batch)):
         bar.update(index)
